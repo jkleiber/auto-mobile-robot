@@ -4,8 +4,10 @@
 #include <RobotLib.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
+#include <utility/imumaths.h>
+#include <Wire.h>
 
-#include "DriveModuleConstants.h"
+#include "Constants.h"
 
 // Encoders
 static QuadratureEncoder left_encoder; // 2-7/8" wheel, rotated 3 times, encoder output: 4192 -> K = 0.006464
@@ -18,7 +20,7 @@ Motor right_motor;
 
 
 // IMU
-
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 /**
  * Interrupt Handlers

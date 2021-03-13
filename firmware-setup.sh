@@ -10,5 +10,9 @@ rm -rf arduino-1.8.13-linuxaarch64.tar.xz
 sudo apt-get install xvfb
 
 # Install Arduino Libraries
-git clone git@github.com:adafruit/Adafruit_Sensor.git ~/arduino-1.8.13/libraries/Adafruit_Sensor
 git clone git@github.com:SoonerRobotics/RobotLib.git ~/arduino-1.8.13/libraries/RobotLib
+# TODO: Auto-install these:
+# Adafruit Unified Sensor 
+# Adafruit BNO055
+# ArduinoJson
+# StreamUtils
