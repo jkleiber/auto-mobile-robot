@@ -6,6 +6,7 @@ close all;
 t0 = 0;
 traj_tf = num_waypoints * tf;
 traj_t = linspace(t0, traj_tf, length(v_traj));
+obstacles = 1:2:num_poles*2;
 
 % Plot the optimized trajectory
 % organize for quiver
@@ -16,9 +17,10 @@ V = sin(waypoints(3,:));
 
 % 2D Trajectory
 figure(1)
-quiver(X,Y,U,V, 0.5)
+quiver(X,Y,U,V, 0.25)
 hold on
 plot(x_traj, y_traj)
+scatter(obstacles, zeros(num_poles,1),'r', 'filled')
 hold off
 xlabel("X")
 ylabel("Y")
