@@ -19,7 +19,7 @@ DEPDIR := .d
 
 # source files, auto generated
 # add sub-projects here as well
-SRCS := $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/gnc/*/*.cpp)
+SRCS := $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/gnc/*/*.cpp) $(wildcard $(SRCDIR)/drivers/*.cpp)
 # object files, auto generated from source files
 OBJS := $(patsubst %,$(OBJDIR)/%.o,$(basename $(SRCS)))
 # dependency files, auto generated from source files

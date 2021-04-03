@@ -3,11 +3,9 @@
 #include <memory>
 
 #include "robot_vars.h"
+#include "drivers/arduino_interface.h"
 #include "gnc/control/ramsete.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
 
 int main(int argc, char **argv) {
 
@@ -24,20 +22,13 @@ int main(int argc, char **argv) {
 
     controller->output();
 
-    const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
-    rapidjson::Document d;
-    d.Parse(json);
+    std::shared_ptr<ArduinoInterface> arduino_interface = 
+        std::make_shared<ArduinoInterface>(
+            &robot_vars->ctrl_out, 
+            &robot_vars->sensor_input, 
+            "/dev/ttyUSB0");
 
-    // 2. Modify it by DOM.
-    rapidjson::Value& s = d["stars"];
-    s.SetInt(s.GetInt() + 1);
+    arduino_interface->update();
 
-    // 3. Stringify the DOM
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    d.Accept(writer);
-
-    // Output {"project":"rapidjson","stars":11}
-    std::cout << buffer.GetString() << std::endl;
     return 0;
 }
