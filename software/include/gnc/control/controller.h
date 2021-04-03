@@ -3,7 +3,7 @@
 
 class Controller {
     public:
-        Controller();
+        virtual void output() = 0;
 };
 
 #endif
