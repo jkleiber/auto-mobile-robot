@@ -8,7 +8,7 @@
 
 
 int main(int argc, char **argv) {
-
+    
     // Initialize the robot variables shared memory
     std::shared_ptr<RobotVariables> robot_vars = std::make_shared<RobotVariables>();
 
@@ -28,7 +28,12 @@ int main(int argc, char **argv) {
             &robot_vars->sensor_input, 
             "/dev/ttyUSB0");
 
-    arduino_interface->update();
+
+    for (int i = 0; i < 100; ++i)
+    {
+        std::cout << i << std::endl;
+        arduino_interface->update();
+    }
 
     return 0;
 }

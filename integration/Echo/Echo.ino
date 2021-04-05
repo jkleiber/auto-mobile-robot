@@ -9,7 +9,7 @@ void loop() {
   if(Serial.available())
   {
     String data = Serial.readStringUntil('\n');
-    Serial.println(data);
+    Serial.print(data + '\n');
   }
-  delay(100);
+  delay(10);
 }

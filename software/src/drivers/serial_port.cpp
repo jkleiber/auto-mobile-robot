@@ -5,7 +5,7 @@ SerialPort::~SerialPort(){}
 int SerialPort::write_data(std::string data)
 {
     int n_written = 0, spot = 0;
-    for(int i = 0; i < data.size(); ++i)
+    for(unsigned int i = 0; i < data.size(); ++i)
     {
         char c = data.at(i);
         n_written = write( port_fd_, &c, 1 );
@@ -16,6 +16,7 @@ int SerialPort::write_data(std::string data)
     return spot;
 }
 
+// TODO: Add timeout
 int SerialPort::read_data(std::string *buffer)
 {
     int n = 0, spot = 0;
@@ -23,13 +24,13 @@ int SerialPort::read_data(std::string *buffer)
 
     /* Whole response*/
     char response[1024];
-    memset(response, '\0', sizeof response);
+    memset(response, '\0', sizeof(response));
 
     do {
         n = read( port_fd_, &buf, 1 );
         sprintf( &response[spot], "%c", buf );
         spot += n;
-    } while( buf != '\r' && n > 0);
+    } while( buf != '\n' && n > 0);
 
     // if (n < 0) {
     //     std::cout << "Error reading: " << strerror(errno) << std::endl;
