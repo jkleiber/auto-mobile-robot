@@ -29,7 +29,7 @@ void ArduinoInterface::update()
     serial_port_.write_data(out_str.c_str());
 
     // Pull data from the serial channel
-    std::string json_str;
+    std::string json_str = "";
     int status = serial_port_.read_data(&json_str);
     const char* json = json_str.c_str();
     
@@ -55,7 +55,7 @@ void ArduinoInterface::update()
         }
         else
         {
-            std::cout << "Incorrect format! Received: " << json;// << std::endl;
+            std::cout << "Incorrect format! Received: " << json << std::endl;
         }
     }
     else

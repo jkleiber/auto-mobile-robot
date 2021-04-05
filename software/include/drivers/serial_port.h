@@ -10,6 +10,7 @@
 #include <termios.h>    // POSIX terminal control definitions
 #include <cstring>
 #include <string>
+#include <sys/ioctl.h>
 
 class SerialPort
 {
@@ -17,13 +18,14 @@ class SerialPort
         SerialPort(std::string port) :
             port_(port){
                 // Open the port
-                port_fd_ = open(port.c_str(), O_RDWR | O_NOCTTY );
+                port_fd_ = open(port.c_str(), O_RDWR | O_NOCTTY);// | O_NONBLOCK );
                 
-                port_setup();
+                port_open_ = !port_setup();
             }
 
         int write_data(std::string data);
         int read_data(std::string *buffer);
+        int available();
 
         virtual ~SerialPort();
 
@@ -31,8 +33,9 @@ class SerialPort
         std::string port_;
 
         int port_fd_;
+        bool port_open_;
 
-        void port_setup();
+        int port_setup();
 };
 
 #endif
