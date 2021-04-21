@@ -28,8 +28,6 @@ int main(int argc, char **argv) {
             &robot_vars->sensor_input, 
             "/dev/ttyUSB0");
 
-    usleep(2000000);
-
     for (int i = 0; i < 100; ++i)
     {
         std::cout << i << std::endl;

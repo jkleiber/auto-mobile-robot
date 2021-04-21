@@ -42,11 +42,11 @@ CPPFLAGS := -g -Wall #-Wextra -pedantic
 # linker flags
 LDFLAGS :=
 # linker flags: libraries to link (e.g. -lfoo)
-LDLIBS :=
+LDLIBS := -L/usr/local/lib -lserial
 # flags required for dependency generation; passed to compilers
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 # include path
-INCLUDE = -Iinclude/ -Ithird_party/
+INCLUDE = -Iinclude/ -Ithird_party/ 
 
 # compile C++ source files
 COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDE) -c -o $@
@@ -86,8 +86,9 @@ check:
 help:
 	@echo available targets: all dist clean distclean install uninstall check
 
+# $(LINK.o) $^
 $(BIN): $(OBJS)
-	$(LINK.o) $^
+	$(LD) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 $(OBJDIR)/%.o: %.c
 $(OBJDIR)/%.o: %.c $(DEPDIR)/%.d

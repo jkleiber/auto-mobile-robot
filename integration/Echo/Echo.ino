@@ -5,13 +5,14 @@ char receivedChars[numChars]; // an array to store the received data
 boolean newData = false;
 
 
-void recvWithEndMarker() {
+//void recvWithEndMarker() {
+void serialEvent() {
  static byte ndx = 0;
  char endMarker = '\n';
  char rc;
  
- while (Serial.available() > 0 && newData == false) {
-   rc = Serial.read();
+ while (Serial.available() > 0){// && newData == false) {
+   rc = (char)Serial.read();
   
    if (rc != endMarker) {
      receivedChars[ndx] = rc;
@@ -35,14 +36,12 @@ void setup() {
 
 void loop() {
 
-  recvWithEndMarker();
-
   if (newData == true)
   {
-    Serial.println("yes");
-//    Serial.println(receivedChars);
-    newData = false;
+      Serial.print(receivedChars);
+      Serial.print("\n");
+      newData = false;
   }
 
-  delay(5);
+  delayMicroseconds(100);
 }

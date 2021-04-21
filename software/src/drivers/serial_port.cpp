@@ -28,7 +28,6 @@ int SerialPort::write_data(std::string data)
     return spot;
 }
 
-// TODO: Add timeout
 int SerialPort::read_data(std::string *buffer)
 {
     if (!port_open_)
@@ -44,21 +43,27 @@ int SerialPort::read_data(std::string *buffer)
     // ioctl(port_fd_,TIOCMBIS,&RTS_flag);//Set RTS pin
 
     // If there is no data in the buffer, then there's nothing to read.
-    // int bytes = this->available();
+    int bytes = this->available();
+    std::cout << "# bytes: " << bytes << std::endl;
     // if (!bytes) {
     //     return 0;
     // }
-    
+    usleep(1000);
 
     /* Whole response */
-    char response[1024];
+    char response[BUFFER_SIZE];
     memset(response, '\0', sizeof(response));
 
-    do {
+    for (int spot = 0; spot < BUFFER_SIZE; ){
         n = read( port_fd_, &buf, 1 );
-        sprintf( &response[spot], "%c", buf );
+        sprintf( &response[spot], "%c", buf );        
         spot += n;
-    } while( buf != '\n' && n > 0);
+
+        if (buf == '\n' || n <= 0)
+        {
+            break;
+        }
+    }
 
     // ioctl(port_fd_,TIOCMBIC,&RTS_flag);//Set RTS pin
     // std::cout << buf << std::endl;
@@ -96,13 +101,13 @@ int SerialPort::port_setup()
     memset (&tty, 0, sizeof tty);
 
     /* Error Handling */
-    if ( tcgetattr ( port_fd_, &tty ) != 0 ) {
+    if ( tcgetattr ( port_fd_, &tty_old ) != 0 ) {
         std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
         return errno;
     }
 
     /* Save old tty parameters */
-    tty_old = tty;
+    tty = tty_old;
 
     /* Set Baud Rate to 9600 */
     cfsetospeed (&tty, (speed_t)B9600);
@@ -110,20 +115,23 @@ int SerialPort::port_setup()
 
     /* Setting other Port Stuff */
     tty.c_cflag     &=  ~PARENB;            // Make 8n1
-    tty.c_cflag     &=  ~CSTOPB;
-    tty.c_cflag     &=  ~CSIZE;
+    tty.c_cflag     &=  ~CSTOPB;            // 1 stop bit
+    // tty.c_cflag     &=  ~CSIZE;              // Customize the size
+    tty.c_cflag     |=  CSIZE;              // Customize the size
     tty.c_cflag     |=  CS8;                // Set size to 8
+    tty.c_cflag     &= ~ICANON;             // Turn off canonical mode
+    tty.c_cflag     |=  CREAD | CLOCAL;     // Turn on READ & ignore ctrl lines
+    tty.c_cflag     &=  ~CRTSCTS;           // Disable flow control
 
-    tty.c_cflag     &=  ~CRTSCTS;            // set flow control
-    tty.c_cc[VMIN]   =  1;                  // read doesn't block
+    tty.c_cc[VMIN]   =  0;                  // Read with a timeout
     tty.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-    tty.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
-
-    /* Make raw */
-    cfmakeraw(&tty);
+    
+    
+    
 
     /* Flush Port, then applies attributes */
     tcflush( port_fd_, TCIFLUSH );
+    tcflush( port_fd_, TCOFLUSH );
     if ( tcsetattr ( port_fd_, TCSANOW, &tty ) != 0) {
         std::cout << "Error " << errno << " from tcsetattr" << std::endl;
         return errno;
@@ -135,3 +143,4 @@ int SerialPort::port_setup()
     // No errors.
     return 0;
 }
+

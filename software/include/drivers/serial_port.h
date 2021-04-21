@@ -12,13 +12,15 @@
 #include <string>
 #include <sys/ioctl.h>
 
+#define BUFFER_SIZE 1024
+
 class SerialPort
 {
     public:
         SerialPort(std::string port) :
             port_(port){
                 // Open the port
-                port_fd_ = open(port.c_str(), O_RDWR | O_NOCTTY);// | O_NONBLOCK );
+                port_fd_ = open(port.c_str(), O_RDWR | O_NOCTTY);
                 
                 port_open_ = !port_setup();
             }
@@ -36,6 +38,7 @@ class SerialPort
         bool port_open_;
 
         int port_setup();
+
 };
 
 #endif
