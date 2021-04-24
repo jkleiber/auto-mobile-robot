@@ -17,16 +17,16 @@
 // Drivers
 #include <libserial/SerialPort.h>
 #include "sensor_data.h"
-// #include "serial_port.h"
 
 // GNC
-#include "gnc/control/control_output.h"
+#include "control/control_output.h"
+#include "navigation/diffdrive_ekf.h"
 
 class ArduinoInterface 
 {
     public: 
         ArduinoInterface(RamseteOutput *ctrl_out,
-                         SensorData *sensor_data,
+                         DiffDriveEKFInput *sensor_data,
                          std::string serial_channel) :
             ctrl_out_(ctrl_out),
             sensor_data_(sensor_data){
@@ -48,7 +48,7 @@ class ArduinoInterface
         RamseteOutput *const ctrl_out_;
 
         // Send sensor info back to GNC
-        SensorData *sensor_data_;
+        DiffDriveEKFInput *sensor_data_;
 
         // Save serial channel info
         LibSerial::SerialPort serial_port_;

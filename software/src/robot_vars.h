@@ -1,19 +1,17 @@
 #ifndef ROBOT_VARIABLES_H
 #define ROBOT_VARIABLES_H
 
-// Drivers
-#include "drivers/sensor_data.h"
-
 // GNC
-#include "gnc/control/control_output.h"
-#include "gnc/guidance/trajectory_point.h"
-#include "gnc/navigation/robot_state.h"
+#include "control/control_output.h"
+#include "guidance/trajectory_point.h"
+#include "navigation/robot_state.h"
+#include "navigation/diffdrive_ekf.h"
 
 typedef struct robot_vars_t {
     RamseteOutput ctrl_out;
     TrajectoryPoint ref_traj;
     RobotState robot_state;
-    SensorData sensor_input;
+    DiffDriveEKFInput ekf_input;
 } RobotVariables;
 
 #endif

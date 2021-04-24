@@ -8,13 +8,18 @@
 #include <Eigen/Dense>
 
 // Robot
-#include "gnc/navigation/robot_state.h"
-#include "gnc/control/control_output.h"
-#include "drivers/sensor_data.h"
+#include "navigation/robot_state.h"
+#include "control/control_output.h"
+
+typedef struct diffdrive_ekf_input_t {
+    double imu_yaw;
+    double linear_velocity;
+    double angular_velocity;
+} DiffDriveEKFInput;
 
 class DiffDriveEKF {
     public:
-        DiffDriveEKF(SensorData *sensor_data,
+        DiffDriveEKF(DiffDriveEKFInput *sensor_data,
             RamseteOutput *ctrl,
             RobotState *robot_state) : 
                 sensor_input_(sensor_data),
@@ -28,7 +33,7 @@ class DiffDriveEKF {
 
     private:
         // Sensor and control data
-        SensorData *const sensor_input_;
+        DiffDriveEKFInput *const sensor_input_;
         RamseteOutput *const ctrl_;
         
         // 3DOF state predictions

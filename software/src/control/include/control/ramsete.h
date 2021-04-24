@@ -12,8 +12,8 @@
 #include "control_output.h"
 
 // Other GNC includes
-#include "gnc/guidance/trajectory_point.h"
-#include "gnc/navigation/robot_state.h"
+#include "guidance/trajectory_point.h"
+#include "navigation/robot_state.h"
 
 class RamseteController : public Controller {
     public:

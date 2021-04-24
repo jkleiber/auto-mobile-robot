@@ -1,4 +1,4 @@
-#include "gnc/control/ramsete.h"
+#include "control/ramsete.h"
 
 void RamseteController::output()
 {

@@ -3,9 +3,11 @@
 #include <memory>
 
 #include "robot_vars.h"
-#include "drivers/arduino_interface.h"
-#include "gnc/control/ramsete.h"
-#include "gnc/navigation/diffdrive_ekf.h"
+#include "arduino_interface.h"
+
+// GNC
+#include "control/ramsete.h"
+#include "navigation/diffdrive_ekf.h"
 
 
 int main(int argc, char **argv) {
@@ -25,7 +27,7 @@ int main(int argc, char **argv) {
     // Navigation
     std::shared_ptr<DiffDriveEKF> robot_ekf = 
         std::make_shared<DiffDriveEKF>(
-            &robot_vars->sensor_input,
+            &robot_vars->ekf_input,
             &robot_vars->ctrl_out, 
             &robot_vars->robot_state
         );
@@ -35,7 +37,7 @@ int main(int argc, char **argv) {
     std::shared_ptr<ArduinoInterface> arduino_interface = 
         std::make_shared<ArduinoInterface>(
             &robot_vars->ctrl_out, 
-            &robot_vars->sensor_input, 
+            &robot_vars->ekf_input, 
             "/dev/ttyUSB0");
 
     controller->output();

@@ -1,4 +1,4 @@
-#include "drivers/arduino_interface.h"
+#include "arduino_interface.h"
 
 ArduinoInterface::~ArduinoInterface(){
     serial_port_.Close();
@@ -56,8 +56,8 @@ void ArduinoInterface::update()
             rapidjson::Value& yaw_val = d["yaw"];
 
             // Update the sensor data from this packet
-            sensor_data_->imu_roll = roll_val.GetDouble();
-            sensor_data_->imu_pitch = pitch_val.GetDouble();
+            // sensor_data_->imu_roll = roll_val.GetDouble();
+            // sensor_data_->imu_pitch = pitch_val.GetDouble();
             sensor_data_->imu_yaw = yaw_val.GetDouble();
         }
         else

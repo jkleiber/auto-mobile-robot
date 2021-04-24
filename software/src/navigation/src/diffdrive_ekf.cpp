@@ -1,4 +1,4 @@
-#include "gnc/navigation/diffdrive_ekf.h"
+#include "navigation/diffdrive_ekf.h"
 
 DiffDriveEKF::~DiffDriveEKF(){}
 
