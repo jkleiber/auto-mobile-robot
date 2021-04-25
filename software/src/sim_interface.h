@@ -1,6 +1,8 @@
 #ifndef SIM_INTERFACE_H
 #define SIM_INTERFACE_H
 
+#include <unistd.h>
+
 // Gazebo
 #include <gazebo/gazebo_config.h>
 #include <gazebo/transport/transport.hh>
@@ -21,7 +23,9 @@ class SimInterface
                      DiffDriveEKFInput *sensor_data) : 
                 ctrl_(ctrl), 
                 sensor_data_(sensor_data),
-                node_(new gazebo::transport::Node()){}
+                node_(new gazebo::transport::Node()){
+                    usleep(5000000);
+                }
 
         void init();
         void update();
