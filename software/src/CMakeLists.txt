@@ -15,8 +15,15 @@ pkg_check_modules(SERIAL libserial)
 
 
 # Robot Code
-add_executable(auto_mobile_robot main.cpp arduino_interface.cpp)
-target_link_libraries(auto_mobile_robot PUBLIC kleiber_guidance kleiber_navigation kleiber_control PRIVATE ${SERIAL_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+add_executable(auto_mobile_robot main.cpp arduino_interface.cpp loop.cpp)
+target_link_libraries(auto_mobile_robot 
+    PUBLIC 
+        kleiber_guidance 
+        kleiber_navigation 
+        kleiber_control 
+    PRIVATE 
+        ${SERIAL_LIBRARIES} 
+        ${CMAKE_THREAD_LIBS_INIT})
 
 
 
@@ -31,5 +38,13 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 # Simulator Code
-add_executable(auto_mobile_robot_sim sim_main.cpp)
-target_link_libraries(auto_mobile_robot_sim ${GAZEBO_LIBRARIES})
+add_executable(auto_mobile_robot_sim sim_main.cpp sim_interface.cpp loop.cpp)
+target_link_libraries(auto_mobile_robot_sim
+    PUBLIC 
+        kleiber_guidance 
+        kleiber_navigation 
+        kleiber_control 
+        ${GAZEBO_LIBRARIES}
+    PRIVATE 
+        ${SERIAL_LIBRARIES} 
+        ${CMAKE_THREAD_LIBS_INIT})

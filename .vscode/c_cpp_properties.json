@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/software/",
+                "${workspaceFolder}/software/src/control/include",
+                "${workspaceFolder}/software/src/guidance/include",
+                "${workspaceFolder}/software/src/navigation/include",
+                "/usr/include/gazebo-11"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

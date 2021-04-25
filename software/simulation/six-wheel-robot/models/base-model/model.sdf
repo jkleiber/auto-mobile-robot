@@ -1,0 +1,271 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <model name="six_wheel_robot">
+    <static>false</static>
+
+    <plugin name="robot_control" filename="libsix_wheel_robot_drivetrain.so"/>
+
+    <link name='chassis'>
+      <pose>0 0 .05 0 0 0</pose>
+
+      <inertial>
+        <mass>2.26</mass>
+        <pose>-0.05 0 0 0 0 0</pose>
+      </inertial>
+
+      <collision name='collision'>
+        <geometry>
+          <box>
+            <size>.2794 .254 .073</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <box>
+            <size>.2794 .254 .073</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+
+    <!-- Left Wheels -->
+    <!-- Back Left -->
+    <link name="left_back_wheel">
+      <pose>-0.095 0.135 0.036 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+
+        <!-- Color -->
+        <material> <!-- Wheel material -->
+          <ambient>0 0.9 0 1</ambient>
+          <diffuse>0 0.9 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="left_back_wheel_hinge">
+      <pose>0 0 -0.03 0 0 0</pose>
+      <child>left_back_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+
+    <!-- Center Left -->
+    <link name="left_center_wheel">
+      <pose>0 0.135 0.036 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+
+        <!-- Color -->
+        <material> <!-- Wheel material -->
+          <ambient>0 0.9 0 1</ambient>
+          <diffuse>0 0.9 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="left_center_wheel_hinge">
+      <pose>0 0 -0.03 0 0 0</pose>
+      <child>left_center_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+
+
+    <!-- Front Left -->
+    <link name="left_front_wheel">
+      <pose>0.095 0.135 0.036 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>.03</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>.03</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+
+        <!-- Color -->
+        <material> <!-- Wheel material -->
+          <ambient>0 0.9 0 1</ambient>
+          <diffuse>0 0.9 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="left_front_wheel_hinge">
+      <pose>0 0 -0.03 0 0 0</pose>
+      <child>left_front_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+  
+
+
+    <!-- Right Wheels -->
+    <!-- Back Right -->
+    <link name="right_back_wheel">
+      <pose>-0.095 -0.135 0.036 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+
+        <!-- Color -->
+        <material> <!-- Wheel material -->
+          <ambient>0 0.9 0 1</ambient>
+          <diffuse>0 0.9 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="right_back_wheel_hinge">
+      <pose>0 0 0.03 0 0 0</pose>
+      <child>right_back_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+
+    <!-- Center Right -->
+    <link name="right_center_wheel">
+      <pose>0 -0.135 0.036 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>.0365125</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+
+        <!-- Color -->
+        <material> <!-- Wheel material -->
+          <ambient>0 0.9 0 1</ambient>
+          <diffuse>0 0.9 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="right_center_wheel_hinge">
+      <pose>0 0 0.03 0 0 0</pose>
+      <child>right_center_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <!-- Front Right -->
+    <link name="right_front_wheel">
+      <pose>0.095 -0.135 0.036 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>.03</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>.03</radius>
+            <length>.00635</length>
+          </cylinder>
+        </geometry>
+
+        <!-- Color -->
+        <material> <!-- Wheel material -->
+          <ambient>0 0.9 0 1</ambient>
+          <diffuse>0 0.9 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="right_front_wheel_hinge">
+      <pose>0 0 0.03 0 0 0</pose>
+      <child>right_front_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+  </model>
+</sdf>

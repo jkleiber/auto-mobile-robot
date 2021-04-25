@@ -3,33 +3,37 @@
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/gazebo_client.hh>
 
-/////////////////////////////////////////////////
-int main(int _argc, char **_argv)
+#include "loop.h"
+#include "sim_interface.h"
+
+
+int main(int argc, char **argv)
 {
-  // Load gazebo as a client
-  gazebo::client::setup(_argc, _argv);
+    // Load gazebo as a client
+    gazebo::client::setup(argc, argv);
 
-  // Create our node for communication
-  gazebo::transport::NodePtr node(new gazebo::transport::Node());
-  node->Init();
+    // Initialize the robot variables shared memory
+    std::shared_ptr<RobotVariables> robot_vars = std::make_shared<RobotVariables>();
 
-  // Publish to the  velodyne topic
-  gazebo::transport::PublisherPtr pub =
-    node->Advertise<gazebo::msgs::Vector2d>("~/six_wheel_robot/cmd_vel");
+    // Initialize the simulation interface
+    std::shared_ptr<SimInterface> sim_interface = std::make_shared<SimInterface>(
+        &robot_vars->ctrl_out, 
+        &robot_vars->ekf_input
+        );
+    sim_interface->init();
 
-  // Wait for a subscriber to connect to this publisher
-  pub->WaitForConnection();
+    // Create the robot software loop
+    std::shared_ptr<Loop> sim_loop = std::make_shared<Loop>(robot_vars.get());
+    sim_loop->init();
 
-  // Create a a vector2 message
-  gazebo::msgs::Vector2d msg;
+    // Run the robot code
+    while(true)
+    {
+        sim_interface->update();
+        sim_loop->update();
+    }
 
-  // Set the velocity in the x-component
-  gazebo::msgs::Set(&msg, ignition::math::Vector2d(std::atof(_argv[1]), std::atof(_argv[2])));
-
-  // Send the message
-  pub->Publish(msg);
-
-  // Make sure to shut everything down.
-  gazebo::client::shutdown();
-
+    // Make sure to shut everything down.
+    gazebo::client::shutdown();
 }
+
