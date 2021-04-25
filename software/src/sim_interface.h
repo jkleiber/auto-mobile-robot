@@ -11,6 +11,9 @@
 #include "navigation/diffdrive_ekf.h"
 #include "control/control_output.h"
 
+// Robot info
+#include "constants.h"
+
 class SimInterface
 {
     public:

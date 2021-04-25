@@ -30,7 +30,7 @@ namespace gazebo
             this->right_front_wheel_ = model->GetJoint("right_front_wheel_hinge");
 
             // Make identical PID controllers for each wheel since they are chained
-            double kp = 0.8;
+            double kp = 0.1;
             double ki = 0.0;
             double kd = 0.0;
             this->left_back_pid_ = common::PID(kp, ki, kd);

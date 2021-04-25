@@ -19,9 +19,17 @@ void SimInterface::init()
 
 void SimInterface::update()
 {
+    // Get control and robot information
+    double v = ctrl_->u(0);
+    double w = ctrl_->u(1);
+    double L = Robot::wheelbase_len;
+    double r = Robot::wheel_radius;
+
     // Calculate left and right wheel velocities
-    double left = 0.0;
-    double right = 0.0;
+    double left_vel = 2.0*v - (w*L);
+    double right_vel = 2.0*v + (w*L);
+    double left = left_vel / (2.0*r);
+    double right = right_vel / (2.0*r);
 
     // Publish the velocities to the simulator
     this->publish_message(left, right);
