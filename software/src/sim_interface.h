@@ -30,6 +30,10 @@ class SimInterface
         void init();
         void update();
 
+        // Sensor updates
+        void imu_update(ConstVector3dPtr &msg);
+        void wheel_vel_update(ConstVector2dPtr &msg);
+
         virtual ~SimInterface();
     
     private:
@@ -39,6 +43,12 @@ class SimInterface
         // Gazebo stuff
         gazebo::transport::NodePtr node_;
         gazebo::transport::PublisherPtr pub_;
+        gazebo::transport::SubscriberPtr imu_sub_;
+        gazebo::transport::SubscriberPtr vel_sub_;
+
+        // Sensors
+        gazebo::msgs::Vector3d imu_msg_;
+        gazebo::msgs::Vector2d vel_msg_;
 
 
         // Publish messages to the simulated drivetrain

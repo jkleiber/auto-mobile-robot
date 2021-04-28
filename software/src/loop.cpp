@@ -31,6 +31,6 @@ void Loop::update()
     controller_->output();
 
     // Test for now just a slow turning arc
-    robot_vars_->ctrl_out.u(0) = 0;
-    robot_vars_->ctrl_out.u(1) = 0.2;
+    robot_vars_->ctrl_out.u(0) = 1;
+    robot_vars_->ctrl_out.u(1) = 1.0;
 }

@@ -13,6 +13,10 @@ void SimInterface::init()
     // Publish to the drivetrain topic
     pub_ = node_->Advertise<gazebo::msgs::Vector2d>("~/six_wheel_robot/cmd_vel");
 
+    // Subscribe to drivetrain sensors
+    imu_sub_ = node_->Subscribe("~/six_wheel_robot/imu", &SimInterface::imu_update, this);
+    vel_sub_ = node_->Subscribe("~/six_wheel_robot/wheel_vel", &SimInterface::wheel_vel_update, this);
+
     // Wait for a subscriber to connect to this publisher
     pub_->WaitForConnection();
 }
@@ -34,9 +38,28 @@ void SimInterface::update()
     // Publish the velocities to the simulator
     this->publish_message(left, right);
 
+    std::cout << vel_msg_.x() << " " << vel_msg_.y() << std::endl;
+
     // simulate communication delay
     usleep(20000);
 }
+
+void SimInterface::imu_update(ConstVector3dPtr &msg)
+{
+    // Save IMU message info
+    imu_msg_.set_x(msg->x());
+    imu_msg_.set_y(msg->y());
+    imu_msg_.set_z(msg->z());
+}
+
+void SimInterface::wheel_vel_update(ConstVector2dPtr &msg)
+{
+    // Save wheel velocity
+    vel_msg_.set_x(msg->x());
+    vel_msg_.set_y(msg->y());
+}
+
+
 
 void SimInterface::publish_message(double left, double right)
 {

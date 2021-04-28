@@ -8,7 +8,9 @@
                 "${workspaceFolder}/software/src/control/include",
                 "${workspaceFolder}/software/src/guidance/include",
                 "${workspaceFolder}/software/src/navigation/include",
-                "/usr/include/gazebo-11"
+                "/usr/include/gazebo-11",
+                "/usr/include/sdformat-9.5",
+                "/usr/include/ignition/math6"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
