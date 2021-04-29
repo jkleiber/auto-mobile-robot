@@ -1,6 +1,6 @@
 #include "control/ramsete.h"
 
-void RamseteController::output()
+void RamseteController::update()
 {
     // Helper variables
     double theta = state_->x(2);
@@ -9,6 +9,7 @@ void RamseteController::output()
 
     // Find difference in robot state and setpoint
     Eigen::Vector3d delta = ref_traj_->state - state_->x;
+    // std::cout << delta << std::endl << std::endl;
 
     // Get rotation matrix from robot frame to global frame
     Eigen::Matrix3d R;
@@ -36,6 +37,7 @@ void RamseteController::output()
     double w_cmd = ang_vel - u2;
 
     // Constrain the output and send it to the control output variable
+    // TODO: constrain output
     ctrl_out_->u(0) = constrain(v_cmd, ref_traj_->lin_vel_constraints(0), ref_traj_->lin_vel_constraints(1));
     ctrl_out_->u(1) = constrain(w_cmd, ref_traj_->ang_vel_constraints(0), ref_traj_->ang_vel_constraints(1));
 }

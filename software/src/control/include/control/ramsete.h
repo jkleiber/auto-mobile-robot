@@ -2,6 +2,7 @@
 #define RAMSETE_CONTROLLER_H
 
 // System includes
+#include <iostream>
 #include <memory>
 
 // Third party includes
@@ -28,7 +29,7 @@ class RamseteController : public Controller {
             zeta_(zeta), 
             b_(b) {}
 
-        void output();
+        void update();
 
         virtual ~RamseteController();
     

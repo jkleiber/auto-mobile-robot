@@ -38,10 +38,15 @@ void SimInterface::update()
     // Publish the velocities to the simulator
     this->publish_message(left, right);
 
-    std::cout << vel_msg_.x() << " " << vel_msg_.y() << std::endl;
-
     // simulate communication delay
     usleep(20000);
+
+    // Add sensor inputs from the robot to the sensor input data structure
+    double v_in = r*(vel_msg_.x() + vel_msg_.y()) / 2.0;
+    double w_in = r*(vel_msg_.y() - vel_msg_.x()) / L;
+    this->sensor_data_->linear_velocity = v_in;
+    this->sensor_data_->angular_velocity = w_in;
+    this->sensor_data_->imu_yaw = imu_msg_.z();
 }
 
 void SimInterface::imu_update(ConstVector3dPtr &msg)

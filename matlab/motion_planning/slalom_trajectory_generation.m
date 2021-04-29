@@ -9,7 +9,7 @@ obstacles = 1:2:num_poles*2;
 
 x = 0;
 list_idx = 1;
-y_opts = [-0.5 0 0.5 0];
+y_opts = [-1 0 1 0];
 % theta_opts1 = [pi/4 pi/4 -pi/4 -pi/4];
 % theta_opts2 = [3*pi/4 3*pi/4 -3*pi/4 -3*pi/4];
 theta_opts1 = [0 pi/4 0 -pi/4];
@@ -20,7 +20,7 @@ for i = 1:(num_waypoints-1)
     y = y_opts(list_idx);
     
     % Choose theta and direction based on list and waypoint
-    if mod(num_waypoints, 2) == 1
+    if mod(num_poles, 2) == 1
         if i > (num_waypoints/2)
            theta = theta_opts2(list_idx);
         elseif i < num_waypoints/2
@@ -65,6 +65,7 @@ end
 % return
 
 % Get ready to save trajectories
+time_traj = [];
 x_traj = [];
 y_traj = [];
 theta_traj = [];
@@ -73,13 +74,13 @@ w_traj = [];
 
 % Timing constraints
 t0 = 0;
-tf = 2;
-dt = 0.1;
+traj_dt = 8;
+dt = 0.5;
 
 % Control constraints
 % [v; w]
-u_lower = [0; -6];
-u_upper = [6; 6];
+u_lower = [0; -1];
+u_upper = [1; 1];
 
 % Optimization Matrices
 Qf = 10000*eye(3);
@@ -92,9 +93,11 @@ for i = 1:num_waypoints
     xf = waypoints(:,i);
     
     % Find the best trajectory
-    [x, y, t, v, w] = direct_collocation(x0, xf, t0, tf, dt, Qf, Q, R, u_lower, u_upper);
+    tf = t0 + traj_dt;
+    [time, x, y, t, v, w] = direct_collocation(x0, xf, t0, tf, dt, Qf, Q, R, u_lower, u_upper);
     
     % Save trajectory to list
+    time_traj = [time_traj; time];
     x_traj = [x_traj; x];
     y_traj = [y_traj; y];
     theta_traj = [theta_traj; t];
@@ -103,6 +106,9 @@ for i = 1:num_waypoints
     
     % update x0 to the current waypoint
     x0 = [x(end); y(end); t(end); v(end); w(end)];
+    
+    % update time
+    t0 = tf;
 end
 
 % Plot the optimized trajectory
@@ -122,4 +128,8 @@ hold off
 xlabel("X")
 ylabel("Y")
 title("Robot Trajectory")
+
+% Save to CSV
+TRAJ = double([time_traj x_traj y_traj theta_traj v_traj w_traj]);
+writematrix(round(TRAJ,6), 'trajectory.csv', 'Delimiter', 'comma');
 

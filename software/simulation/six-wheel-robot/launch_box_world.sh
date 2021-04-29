@@ -9,4 +9,4 @@ cd plugins/drivetrain/build
 export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:$(pwd)
 
 # Launch the world
-gazebo --verbose ../../../worlds/basic-cardboard-box-world.sdf
+gazebo --verbose ../../../worlds/basic-box-world.sdf

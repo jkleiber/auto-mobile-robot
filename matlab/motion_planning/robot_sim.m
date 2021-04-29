@@ -69,8 +69,8 @@ function [dxdt, u] = robot_simulation(t, x, states, v, w, ctrl_t)
     u = [v_in*cos(et) - U(1);
          w_in - U(2)];
      
-    u(1) = constrain(u(1), 0, 6);
-    u(2) = constrain(u(2), -6, 6);
+    u(1) = constrain(u(1), 0, 1);
+    u(2) = constrain(u(2), -1, 1);
      
     % Find derivatives of nonlinear system
     dxdt = differential_drive(x, u);

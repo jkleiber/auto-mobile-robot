@@ -1,8 +1,9 @@
 
-function [x, y, theta, v, w] = direct_collocation(x0, xf, t0, tf, dt, Qf, Q, R, u_lower, u_upper)
+function [time, x, y, theta, v, w] = direct_collocation(x0, xf, t0, tf, dt, Qf, Q, R, u_lower, u_upper)
 
 % Timing discretization
 N = floor((tf - t0) / dt);
+time = linspace(t0, tf, N)';
 
 % Find input variables
 % [X, Y, Theta, V, W]

@@ -62,12 +62,12 @@ namespace gazebo
             // Subscribe to this topic
             this->sub_ = this->node_->Subscribe(topic_name, &SixWheelDrivetrainPlugin::OnMsg, this);
 
-            // Connect to world updates
-            this->update_conn_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&SixWheelDrivetrainPlugin::OnUpdate, this, _1));
-
             // Publish sensor data to topics
             this->imu_pub_ = this->node_->Advertise<gazebo::msgs::Vector3d>("~/" + this->model_->GetName() + "/imu");
             this->vel_pub_ = this->node_->Advertise<gazebo::msgs::Vector2d>("~/" + this->model_->GetName() + "/wheel_vel");
+
+            // Connect to world updates
+            this->update_conn_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&SixWheelDrivetrainPlugin::OnUpdate, this, _1));
         }
 
         void SetVelocity(const double &left, const double &right)
