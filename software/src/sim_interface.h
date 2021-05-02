@@ -19,7 +19,7 @@
 class SimInterface
 {
     public:
-        SimInterface(RamseteOutput *ctrl, 
+        SimInterface(VelocityControl *ctrl, 
                      DiffDriveEKFInput *sensor_data) : 
                 ctrl_(ctrl), 
                 sensor_data_(sensor_data),
@@ -37,7 +37,7 @@ class SimInterface
         virtual ~SimInterface();
     
     private:
-        RamseteOutput *const ctrl_;
+        VelocityControl *const ctrl_;
         DiffDriveEKFInput *sensor_data_;
 
         // Gazebo stuff

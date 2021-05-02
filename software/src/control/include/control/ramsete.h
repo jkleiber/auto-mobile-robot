@@ -11,6 +11,7 @@
 // Control library includes
 #include "controller.h"
 #include "control_output.h"
+#include "utils.h"
 
 // Other GNC includes
 #include "guidance/trajectory_point.h"
@@ -20,7 +21,7 @@ class RamseteController : public Controller {
     public:
         RamseteController(TrajectoryPoint *ref_traj, 
                           RobotState *state, 
-                          RamseteOutput *ctrl_out,
+                          VelocityControl *ctrl_out,
                           double zeta, 
                           double b) :
             ref_traj_(ref_traj), 
@@ -39,7 +40,7 @@ class RamseteController : public Controller {
         RobotState *const state_;
 
         // Controller output
-        RamseteOutput *ctrl_out_;
+        VelocityControl *ctrl_out_;
         
         // Controller gain parameters
         double zeta_;
@@ -47,7 +48,6 @@ class RamseteController : public Controller {
 
         // Control calculations
         double sinc(double x);
-        double constrain(double x, double min_x, double max_x);
         
 };
 

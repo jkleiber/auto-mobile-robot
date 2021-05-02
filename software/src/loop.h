@@ -9,6 +9,7 @@
 
 // GNC
 #include "control/ramsete.h"
+#include "control/point_shoot.h"
 #include "guidance/trajectory_reader.h"
 #include "navigation/diffdrive_ekf.h"
 
@@ -32,7 +33,7 @@ class Loop {
         std::shared_ptr<TrajectoryReader> traj_reader_;
 
         // Controller
-        std::shared_ptr<RamseteController> controller_;
+        std::shared_ptr<PointShootControl> controller_;
 
         // EKF
         std::shared_ptr<DiffDriveEKF> robot_ekf_;

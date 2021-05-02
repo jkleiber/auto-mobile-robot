@@ -3,8 +3,8 @@
 
 #include <Eigen/Dense>
 
-typedef struct ramsete_output_t {
+typedef struct velocity_ctrl_output_t {
     Eigen::Vector2d u;
-} RamseteOutput;
+} VelocityControl;
 
 #endif

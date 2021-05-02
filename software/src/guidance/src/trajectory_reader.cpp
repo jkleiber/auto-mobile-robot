@@ -76,31 +76,62 @@ void TrajectoryReader::init()
         traj_pt.linear_velocity = v;
         traj_pt.angular_velocity = w;
         traj_pt.lin_vel_constraints(0) = 0.0;
-        traj_pt.lin_vel_constraints(1) = 2.0;
-        traj_pt.ang_vel_constraints(0) = -1.0;
-        traj_pt.ang_vel_constraints(1) = 1.0;
+        traj_pt.lin_vel_constraints(1) = 1;
+        traj_pt.ang_vel_constraints(0) = -2.0;
+        traj_pt.ang_vel_constraints(1) = 2.0;
 
         // Add the point to the deque
         traj_.push_back(traj_pt);
     }
     
-    
+    active_traj_pt_ = 1;
 }
 
 void TrajectoryReader::update()
 {
+    double norm_threshold = 0.25;
+    // Get closest point within trajectory
     if (traj_.size() > 0)
     {
-        // std::cout << "norm:\n" << (cur_state_->x - traj_.front().state).norm() << std::endl;
+        // Get robot x,y coords
+        Eigen::Vector2d robot_xy, traj_xy;
+        robot_xy << cur_state_->x(0), cur_state_->x(1);
 
-        if((cur_state_->x - traj_.front().state).norm() < 0.2)
+        for (int i = 0; i < traj_.size(); ++i)
         {
-            traj_.pop_front();
-            std::cout << "Target: \n" << ref_pt_->state << std::endl;
-        }
+            // Get trajectory x,y
+            traj_xy(0) = traj_.front().state(0);
+            traj_xy(1) = traj_.front().state(1);
 
-        *ref_pt_ = traj_.front();
+            if((robot_xy - traj_xy).norm() < norm_threshold)
+            {
+                traj_.pop_front();
+            }
+            else
+            {
+                *ref_pt_ = traj_.front();
+                break;
+            }
+        }
     }
+    else
+    {
+        ref_pt_->ang_vel_constraints = Eigen::Vector2d::Zero();
+        ref_pt_->lin_vel_constraints = Eigen::Vector2d::Zero();
+    }
+
+    // if (traj_.size() > 0)
+    // {
+    //     // std::cout << "norm:\n" << (cur_state_->x - traj_.front().state).norm() << std::endl;
+
+    //     if((cur_state_->x - traj_.front().state).norm() < 0.2)
+    //     {
+    //         traj_.pop_front();
+    //         std::cout << "Target: \n" << ref_pt_->state << std::endl;
+    //     }
+
+    //     *ref_pt_ = traj_.front();
+    // }
 
     // Only do stuff if the trajectory has at least two elements
     // if(traj_.size() > 1)

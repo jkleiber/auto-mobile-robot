@@ -1,5 +1,6 @@
-#ifndef TRAJECTORY_READER_H
-#define TRAJECTORY_READER_H
+#ifndef PURE_PURSUIT_H
+#define PURE_PURSUIT_H
+
 
 // System
 #include <iostream>
@@ -11,29 +12,30 @@
 
 // Third Party
 #include <Eigen/Dense>
-#include <Eigen/Core>
 
 // GNC
 #include "trajectory_point.h"
 #include "navigation/robot_state.h"
 
 
-class TrajectoryReader {
+
+class PurePursuit {
 
     public:
-        TrajectoryReader(std::string filename, 
+        PurePursuit(std::string filename, 
                          TrajectoryPoint *ref_traj,
                          RobotState *robot_x,
                          double *t) 
             : filename_(filename),
               ref_pt_(ref_traj),
               cur_state_(robot_x),
-              t_ref_(t) {}
+              t_ref_(t),
+              closest_pt_idx_(0) {}
 
         void init();
         void update();
 
-        virtual ~TrajectoryReader();
+        virtual ~PurePursuit();
 
     private:
         // Interfacing with the loop
@@ -48,7 +50,8 @@ class TrajectoryReader {
         // File reading
         std::ifstream traj_file_;
 
-        int active_traj_pt_;
+        // Make sure there is a lower bound on lookahead index
+        int closest_pt_idx_;
 
 };
 

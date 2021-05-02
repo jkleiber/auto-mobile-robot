@@ -8,7 +8,7 @@
 #include "navigation/diffdrive_ekf.h"
 
 typedef struct robot_vars_t {
-    RamseteOutput ctrl_out;
+    VelocityControl ctrl_out;
     TrajectoryPoint ref_traj;
     RobotState robot_state;
     DiffDriveEKFInput ekf_input;

@@ -25,7 +25,7 @@
 class ArduinoInterface 
 {
     public: 
-        ArduinoInterface(RamseteOutput *ctrl_out,
+        ArduinoInterface(VelocityControl *ctrl_out,
                          DiffDriveEKFInput *sensor_data,
                          std::string serial_channel) :
             ctrl_out_(ctrl_out),
@@ -45,7 +45,7 @@ class ArduinoInterface
     
     private:
         // Output from the Ramsete controller
-        RamseteOutput *const ctrl_out_;
+        VelocityControl *const ctrl_out_;
 
         // Send sensor info back to GNC
         DiffDriveEKFInput *sensor_data_;

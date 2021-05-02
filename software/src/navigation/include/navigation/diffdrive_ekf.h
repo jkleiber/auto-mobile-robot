@@ -20,7 +20,7 @@ typedef struct diffdrive_ekf_input_t {
 class DiffDriveEKF {
     public:
         DiffDriveEKF(DiffDriveEKFInput *sensor_data,
-            RamseteOutput *ctrl,
+            VelocityControl *ctrl,
             RobotState *robot_state) : 
                 sensor_input_(sensor_data),
                 ctrl_(ctrl),
@@ -34,7 +34,7 @@ class DiffDriveEKF {
     private:
         // Sensor and control data
         DiffDriveEKFInput *const sensor_input_;
-        RamseteOutput *const ctrl_;
+        VelocityControl *const ctrl_;
         
         // 3DOF state predictions
         RobotState *robot_state_;

@@ -14,13 +14,19 @@ void Loop::init()
     traj_reader_->init();
 
     // Robot controller
-    controller_ = std::make_shared<RamseteController>(
+    controller_ = std::make_shared<PointShootControl>(
                     &robot_vars_->ref_traj, 
                     &robot_vars_->robot_state, 
-                    &robot_vars_->ctrl_out, 
-                    0.4, 
-                    18
+                    &robot_vars_->ctrl_out
                 );
+    controller_->init();
+    // controller_ = std::make_shared<RamseteController>(
+    //                 &robot_vars_->ref_traj, 
+    //                 &robot_vars_->robot_state, 
+    //                 &robot_vars_->ctrl_out, 
+    //                 0.8, 
+    //                 20
+    //             );
 
     // Navigation
     robot_ekf_ = std::make_shared<DiffDriveEKF>(

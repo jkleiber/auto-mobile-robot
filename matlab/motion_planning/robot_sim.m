@@ -43,8 +43,8 @@ function [dxdt, u] = robot_simulation(t, x, states, v, w, ctrl_t)
     state = interp1(ctrl_t, states, t)';
 
     % Control gains
-    zeta = 0.4;
-    b = 18;
+    zeta = 0.8;
+    b = 20;
     K = 2*zeta*sqrt(w_in^2 + b*v_in^2);
     k1 = K;
     k2 = b;

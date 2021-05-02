@@ -9,7 +9,7 @@ void RamseteController::update()
 
     // Find difference in robot state and setpoint
     Eigen::Vector3d delta = ref_traj_->state - state_->x;
-    // std::cout << delta << std::endl << std::endl;
+    // std::cout << "theta: " << theta << "\ndtheta: " << delta(2) << "\ntarget: " << ref_traj_->state(2) << std::endl ;
 
     // Get rotation matrix from robot frame to global frame
     Eigen::Matrix3d R;
@@ -38,8 +38,10 @@ void RamseteController::update()
 
     // Constrain the output and send it to the control output variable
     // TODO: constrain output
-    ctrl_out_->u(0) = constrain(v_cmd, ref_traj_->lin_vel_constraints(0), ref_traj_->lin_vel_constraints(1));
-    ctrl_out_->u(1) = constrain(w_cmd, ref_traj_->ang_vel_constraints(0), ref_traj_->ang_vel_constraints(1));
+    ctrl_out_->u(0) = ControlUtils::constrain(v_cmd, ref_traj_->lin_vel_constraints(0), ref_traj_->lin_vel_constraints(1));
+    ctrl_out_->u(1) = ControlUtils::constrain(w_cmd, ref_traj_->ang_vel_constraints(0), ref_traj_->ang_vel_constraints(1));
+
+    std::cout << "ctrl: \n" << ctrl_out_->u << std::endl << std::endl;
 }
 
 RamseteController::~RamseteController(){}
@@ -54,8 +56,3 @@ double RamseteController::sinc(double x)
     return (sin(x) / x);
 }
 
-
-double RamseteController::constrain(double x, double min_x, double max_x)
-{
-    return std::fmin(max_x, std::fmax(x, min_x));
-}

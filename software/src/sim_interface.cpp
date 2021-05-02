@@ -39,7 +39,7 @@ void SimInterface::update()
     this->publish_message(left, right);
 
     // simulate communication delay
-    usleep(20000);
+    usleep(10000);
 
     // Add sensor inputs from the robot to the sensor input data structure
     double v_in = r*(vel_msg_.x() + vel_msg_.y()) / 2.0;
