@@ -13,6 +13,7 @@ In the future I might make a ROS2 repository that uses the same components, but 
 * LibSerial
 * Eigen
 * RapidJSON
+* NLOpt
 * Gazebo
 
 ### LibSerial Setup
@@ -22,3 +23,9 @@ In the future I might make a ROS2 repository that uses the same components, but 
 4. Run `sudo make install` from the build directory
 5. LibSerial will be installed to `/usr/local/lib`
 - In the future this will be part of a docker container and won't require setup.
+
+
+### NLOpt Setup
+1. Clone the NLOpt repo
+2. Follow the installation instructions (standard CMake instructions)
+3. Run `sudo ldconfig` to refresh the package list

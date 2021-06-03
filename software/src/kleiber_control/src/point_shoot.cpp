@@ -1,4 +1,4 @@
-#include "control/point_shoot.h"
+#include "kleiber_control/point_shoot.h"
 
 PointShootControl::~PointShootControl(){}
 

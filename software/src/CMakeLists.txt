@@ -55,3 +55,14 @@ target_link_libraries(auto_mobile_robot_sim
     PRIVATE 
         ${SERIAL_LIBRARIES} 
         ${CMAKE_THREAD_LIBS_INIT})
+
+
+###########################
+#         Testing
+###########################
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(OPTIMIZATION REQUIRED nlopt)
+
+add_executable(test_optimization optim_main.cpp)
+target_link_libraries(test_optimization PUBLIC ${OPTIMIZATION_LIBRARIES})

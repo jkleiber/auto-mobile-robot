@@ -27,7 +27,7 @@ class PointShootControl : public Controller
                 ref_traj_(ref_traj),
                 state_(state),
                 ctrl_(ctrl_out),
-                w_ctrl_(2.0, 0.0, 0.0, &angle_ref_, &angle_, &w_out_) {}
+                w_ctrl_(5.0, 0.0, 0.0, &angle_ref_, &angle_, &w_out_) {}
 
         void init();
         void update();
