@@ -15,7 +15,7 @@
 
 // GNC
 #include "trajectory_point.h"
-#include "navigation/robot_state.h"
+#include "kleiber_navigation/robot_state.h"
 
 
 

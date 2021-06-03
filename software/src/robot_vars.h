@@ -2,10 +2,10 @@
 #define ROBOT_VARIABLES_H
 
 // GNC
-#include "control/control_output.h"
-#include "guidance/trajectory_point.h"
-#include "navigation/robot_state.h"
-#include "navigation/diffdrive_ekf.h"
+#include "kleiber_control/control_output.h"
+#include "kleiber_guidance/trajectory_point.h"
+#include "kleiber_navigation/robot_state.h"
+#include "kleiber_navigation/diffdrive_ekf.h"
 
 typedef struct robot_vars_t {
     VelocityControl ctrl_out;

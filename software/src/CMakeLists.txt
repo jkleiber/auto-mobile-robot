@@ -1,9 +1,9 @@
 project(amr_src)
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-add_subdirectory(control)
-add_subdirectory(guidance)
-add_subdirectory(navigation)
+add_subdirectory(kleiber_control)
+add_subdirectory(kleiber_guidance)
+add_subdirectory(kleiber_navigation)
 
 
 # C++17

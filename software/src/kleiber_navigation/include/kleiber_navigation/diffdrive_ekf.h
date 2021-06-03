@@ -8,8 +8,8 @@
 #include <Eigen/Dense>
 
 // Robot
-#include "navigation/robot_state.h"
-#include "control/control_output.h"
+#include "kleiber_navigation/robot_state.h"
+#include "kleiber_control/control_output.h"
 
 typedef struct diffdrive_ekf_input_t {
     double imu_yaw;

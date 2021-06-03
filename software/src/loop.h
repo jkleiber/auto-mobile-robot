@@ -8,10 +8,10 @@
 #include "robot_vars.h"
 
 // GNC
-#include "control/ramsete.h"
-#include "control/point_shoot.h"
-#include "guidance/trajectory_reader.h"
-#include "navigation/diffdrive_ekf.h"
+#include "kleiber_control/ramsete.h"
+#include "kleiber_control/point_shoot.h"
+#include "kleiber_guidance/trajectory_reader.h"
+#include "kleiber_navigation/diffdrive_ekf.h"
 
 class Loop {
     public:

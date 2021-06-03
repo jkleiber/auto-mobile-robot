@@ -19,8 +19,8 @@
 #include "sensor_data.h"
 
 // GNC
-#include "control/control_output.h"
-#include "navigation/diffdrive_ekf.h"
+#include "kleiber_control/control_output.h"
+#include "kleiber_navigation/diffdrive_ekf.h"
 
 class ArduinoInterface 
 {

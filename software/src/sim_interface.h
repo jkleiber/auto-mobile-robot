@@ -10,8 +10,8 @@
 #include <gazebo/gazebo_client.hh>
 
 // GNC
-#include "navigation/diffdrive_ekf.h"
-#include "control/control_output.h"
+#include "kleiber_navigation/diffdrive_ekf.h"
+#include "kleiber_control/control_output.h"
 
 // Robot info
 #include "constants.h"
