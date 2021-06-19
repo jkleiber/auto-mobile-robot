@@ -10,7 +10,7 @@
 #include "Constants.h"
 
 // Encoders
-static QuadratureEncoder left_encoder; // 2-7/8" wheel, rotated 3 times, encoder output: 4192 -> K = 0.006464
+static QuadratureEncoder left_encoder; 
 static QuadratureEncoder right_encoder;// 2-7/8" wheel, rotated 3 times, encoder output: 4192 -> K = 0.006464
 
 
