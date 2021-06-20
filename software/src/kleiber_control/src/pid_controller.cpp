@@ -36,6 +36,9 @@ void PIDController::update()
 
     // Compute the output
     *output_ = P + I + D;
+
+    // Update the error tracker
+    last_error_ = error;
 }
 
 void PIDController::gains(double kp, double ki, double kd)

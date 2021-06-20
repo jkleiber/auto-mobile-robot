@@ -10,11 +10,36 @@ In the future I might make a ROS2 repository that uses the same components, but 
 2. Run simulation `./sim.sh` or run robot code `./robot.sh`
 
 ## Dependencies
+* GCC/G++ >= 8.0
+* CMake >=3.13 
 * LibSerial
 * Eigen
 * RapidJSON
 * NLOpt
 * Gazebo
+
+### GCC/G++ Upgrade
+1. Install the GCC/G++ version you want
+```
+sudo apt-get install gcc-8 g++-8
+```
+2. Use `update-alternatives` to change the default version used by the OS
+```
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8
+```
+
+Check out this link for more info: [Link](https://linuxize.com/post/how-to-install-gcc-on-ubuntu-20-04/)
+
+### CMake Install / Upgrade
+```
+sudo apt-get install build-essential libssl-dev
+wget https://github.com/Kitware/CMake/releases/download/v3.20.4/cmake-3.20.4.tar.gz
+tar -zxvf cmake-3.20.4.tar.gz
+cd tar -zxvf cmake-3.20.4
+./bootstrap
+make
+sudo make install
+```
 
 ### LibSerial Setup
 1. Clone the LibSerial repo
@@ -28,4 +53,12 @@ In the future I might make a ROS2 repository that uses the same components, but 
 ### NLOpt Setup
 1. Clone the NLOpt repo
 2. Follow the installation instructions (standard CMake instructions)
+```
+cd nlopt
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
 3. Run `sudo ldconfig` to refresh the package list

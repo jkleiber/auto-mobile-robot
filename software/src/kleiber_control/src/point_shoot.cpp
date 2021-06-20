@@ -28,6 +28,8 @@ void PointShootControl::update()
     {
         v_out = 0.05;
     }
+
+    v_out = v_out * 5;
     
     // Aim
     double dx = ref_traj_->state(0) - state_->x(0);

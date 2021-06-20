@@ -3,6 +3,7 @@
 
 // System 
 #include <iostream>
+#include <math.h>
 #include <string>
 #include <unistd.h>
 
@@ -35,7 +36,7 @@ class ArduinoInterface
             it_test = 0;
 
             // Give the arduino time to reset
-            usleep(300000); // 3 seconds is a very conservative estimate based on testing
+            usleep(3000000); // 3 seconds is a very conservative estimate based on testing
         }
 
         // Send commands to the arduino and get the sensor data
