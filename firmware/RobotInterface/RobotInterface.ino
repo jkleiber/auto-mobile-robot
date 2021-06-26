@@ -31,9 +31,12 @@ float left_vel_desired = 0.0;
 float right_vel_desired = 0.0;
 
 // PIDs for tracking velocity commands
-PID left_vel_pid(0.0, 0.5, 0.1, 0);
-PID right_vel_pid(0.0, 0.5, 0.1, 0);
+PID left_vel_pid(0.0, 0.0, 1.5, 0);
+PID right_vel_pid(0.0, 0.0, 1.5, 0);
 float left_power = 0.0, right_power = 0.0;
+
+// Deadband (set to 0 if absolute value is smaller than this)
+float deadband = 0.01;
 
 // Track control loop timing
 unsigned long last_loop_time;
@@ -72,7 +75,7 @@ void serialEvent() {
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
 
     device_init();
 
@@ -98,10 +101,10 @@ void setup()
     /* Configure PID */
     // Left
     left_vel_pid.setOutputRange(-1, 1);
-    left_vel_pid.setIntegratorBounds(-0.1, 0.1);
+    left_vel_pid.setIntegratorBounds(-1, 1);
     // Right
     right_vel_pid.setOutputRange(-1, 1);
-    right_vel_pid.setIntegratorBounds(-0.1, 0.1);
+    right_vel_pid.setIntegratorBounds(-1, 1);
 
     // Start loop timing
     last_loop_time = millis();
@@ -116,7 +119,7 @@ void loop()
     // Update robot orientation
     sensor_pkt["roll"] = event.orientation.z;
     sensor_pkt["pitch"] = event.orientation.y;
-    sensor_pkt["yaw"] = event.orientation.x; // CW increasing
+    sensor_pkt["yaw"] = 360.0 - event.orientation.x; // The sensor is CW increasing, so invert it to be CCW increasing to be in the correct coordinate frame
     sensor_pkt["right_vel"] = right_vel;
     sensor_pkt["left_vel"] = left_vel;
 
@@ -167,12 +170,24 @@ void loop()
     }
 
     // Calculate the motor output based on PID
-    left_power = -1.0 * (left_vel_desired + left_vel_pid.update(left_vel_desired, left_vel));
-    right_power = -1.0 * (right_vel_desired + right_vel_pid.update(right_vel_desired, right_vel));
+    left_power = -1.0 * (left_vel_pid.update(left_vel_desired, left_vel));
+    right_power = -1.0 * (right_vel_pid.update(right_vel_desired, right_vel));
+    // left_power = -1.0 * (left_vel_desired + left_vel_pid.update(left_vel_desired, left_vel));
+    // right_power = -1.0 * (right_vel_desired + right_vel_pid.update(right_vel_desired, right_vel));
 
     // Clamp power output
     left_power = RLUtil::clamp(left_power, -1, 1);
     right_power = RLUtil::clamp(right_power, -1, 1);
+
+    // Determine if the deadband needs to be applied
+    if(fabs(left_vel_desired) < fabs(deadband))
+    {
+        left_power = 0.0;
+    }
+    if(fabs(right_vel_desired) < fabs(deadband))
+    {
+        right_power = 0.0;
+    }
 
     // Tank drive
     if(!stop_robot)
