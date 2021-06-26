@@ -1,6 +1,8 @@
 #ifndef VECTOR_ACTION_H
 #define VECTOR_ACTION_H
 
+#include <iostream>
+
 #include "kleiber_guidance/action.h"
 #include "kleiber_guidance/simple_command.h"
 

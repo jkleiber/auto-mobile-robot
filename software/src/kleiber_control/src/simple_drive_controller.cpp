@@ -33,5 +33,5 @@ void SimpleDriveController::update()
     ctrl_->u(0) = vel_setpoint;
     ctrl_->u(1) = w_out_;
 
-    std::cout << yaw_control_.get_error() << "   " << w_out_ << std::endl;
+    // std::cout << yaw_control_.get_error() << "   " << w_out_ << std::endl;
 }

@@ -21,4 +21,6 @@ void VectorAction::stop()
 {
     // Set to enabled
     cmd_->enabled = false;
+
+    stop_action();
 }

@@ -5,7 +5,7 @@ Loop::~Loop(){}
 void Loop::init()
 {
     // TODO: initialize robot vars to avoid segfaults
-    
+
     // Trajectory reader
     // traj_reader_ = std::make_shared<TrajectoryReader>(
     //     "config/trajectory.csv",
@@ -24,13 +24,12 @@ void Loop::init()
     // controller_->init();
 
     // Action Command
-    vector_action_ = std::make_shared<VectorAction>(
-                        15.0,
-                        M_PI,
-                        0.0,
-                        &robot_vars_->simple_cmd
-                    );
-    vector_action_->start();
+    std::vector<std::shared_ptr<Action> > action_vector;
+    action_vector.push_back(std::make_shared<VectorAction>(15.0, M_PI, 0.0, &robot_vars_->simple_cmd));
+    action_vector.push_back(std::make_shared<VectorAction>(15.0, M_PI, 0.5, &robot_vars_->simple_cmd));
+    
+    // Routine manager
+    routine_ = std::make_shared<Routine>(action_vector);
 
     // Simple Robot Controller
     controller_ = std::make_shared<SimpleDriveController>(
@@ -56,7 +55,8 @@ void Loop::update()
 {
     // Get the reference point
     // traj_reader_->update();
-    vector_action_->update();
+    // vector_action_->update();
+    routine_->update();
 
     // Update EKF
     robot_ekf_->update();

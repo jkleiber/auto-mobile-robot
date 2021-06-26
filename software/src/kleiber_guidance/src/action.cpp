@@ -38,3 +38,13 @@ void Action::start_action()
     is_started_ = true;
     start_time_ = std::chrono::steady_clock::now();
 }
+
+bool Action::is_started()
+{
+    return is_started_;
+}
+
+bool Action::is_stopped()
+{
+    return is_stopped_;
+}

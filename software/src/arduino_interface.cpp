@@ -17,7 +17,7 @@ void ArduinoInterface::update()
     {
         rapidjson::Document d;
         d.Parse(json);
-        std::cout << json_str << std::endl;
+        // std::cout << json_str << std::endl;
 
         // Document must be an object and have the appropriate members
         // TODO: make this validator better
@@ -78,7 +78,7 @@ void ArduinoInterface::update()
     std::string out_str = out_buffer.GetString();
     out_str += "\n";
     this->arduino_write(out_str);
-    std::cout << out_str << std::endl;
+    // std::cout << out_str << std::endl;
 
     // Adding in a sleep results in fewer dropped packets
     usleep(20000);

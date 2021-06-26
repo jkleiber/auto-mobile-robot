@@ -97,7 +97,7 @@ double PIDController::get_error()
         }
 
         // Error is the minimum magnitude of the two possibilities
-        std::cout << "ref: " << *setpoint_ * 180.0 / M_PI << " ang: " << wrapped_state * 180.0 / M_PI << " err1: " << err_1 << " err2: " << err_2 << std::endl;
+        // std::cout << "ref: " << *setpoint_ * 180.0 / M_PI << " ang: " << wrapped_state * 180.0 / M_PI << " err1: " << err_1 << " err2: " << err_2 << std::endl;
         error = err_1;
         if(fabs(err_2) < fabs(err_1))
         {
