@@ -53,6 +53,7 @@ void PIDController::set_wrap(bool is_wrap, double x_min, double x_max)
     this->is_wrap_ = is_wrap;
     this->wrap_min_ = x_min;
     this->wrap_max_ = x_max;
+    this->wrap_range_ = x_max - x_min;
 }
 
 double PIDController::get_error()
@@ -66,22 +67,37 @@ double PIDController::get_error()
     // For states that wrap, take the wrapping into account
     else
     {
-        double err_1 = *setpoint_ - *state_;
+        /* Wrap the state */
+        double wrapped_state = *state_;
+        double dist_from_edge = 0.0;
+        if(*state_ > wrap_max_)
+        {
+            dist_from_edge = *state_ - wrap_max_;
+            wrapped_state = fmod(dist_from_edge, wrap_range_) + wrap_min_;
+        }
+        else if(*state_ < wrap_min_)
+        {
+            dist_from_edge = *state_ - wrap_min_;
+            wrapped_state = fmod(dist_from_edge, wrap_range_) + wrap_max_;
+        }
+        // No "else" required because this is handled by the wrapped state being set to *state.
+
+        double err_1 = *setpoint_ - wrapped_state;
 
         // Check to see if setpoint is bigger than state to set up the correct wrap directions
         double err_2 = 0.0;
         
-        if (*setpoint_ > *state_)
+        if (*setpoint_ > wrapped_state)
         {
-            err_2 = (*setpoint_ - wrap_max_) + (wrap_min_ - *state_);
+            err_2 = (*setpoint_ - wrap_max_) + (wrap_min_ - wrapped_state);
         }
         else
         {
-            err_2 = (wrap_max_ - *state_) + (*setpoint_ - wrap_min_);
+            err_2 = (wrap_max_ - wrapped_state) + (*setpoint_ - wrap_min_);
         }
 
         // Error is the minimum magnitude of the two possibilities
-        std::cout << "ref: " << *setpoint_ << " ang: " << *state_ << " err1: " << err_1 << " err2: " << err_2 << std::endl;
+        std::cout << "ref: " << *setpoint_ * 180.0 / M_PI << " ang: " << wrapped_state * 180.0 / M_PI << " err1: " << err_1 << " err2: " << err_2 << std::endl;
         error = err_1;
         if(fabs(err_2) < fabs(err_1))
         {

@@ -4,29 +4,41 @@ Loop::~Loop(){}
 
 void Loop::init()
 {
+    // TODO: initialize robot vars to avoid segfaults
+    
     // Trajectory reader
-    traj_reader_ = std::make_shared<TrajectoryReader>(
-        "config/trajectory.csv",
-        &robot_vars_->ref_traj,
-        &robot_vars_->robot_state,
-        &loop_time_
-    );
-    traj_reader_->init();
+    // traj_reader_ = std::make_shared<TrajectoryReader>(
+    //     "config/trajectory.csv",
+    //     &robot_vars_->ref_traj,
+    //     &robot_vars_->robot_state,
+    //     &loop_time_
+    // );
+    // traj_reader_->init();
 
-    // Robot controller
-    controller_ = std::make_shared<PointShootControl>(
-                    &robot_vars_->ref_traj, 
+    // Trajectory Following Robot controller
+    // controller_ = std::make_shared<PointShootControl>(
+    //                 &robot_vars_->ref_traj, 
+    //                 &robot_vars_->robot_state, 
+    //                 &robot_vars_->ctrl_out
+    //             );
+    // controller_->init();
+
+    // Action Command
+    vector_action_ = std::make_shared<VectorAction>(
+                        15.0,
+                        M_PI,
+                        0.0,
+                        &robot_vars_->simple_cmd
+                    );
+    vector_action_->start();
+
+    // Simple Robot Controller
+    controller_ = std::make_shared<SimpleDriveController>(
+                    &robot_vars_->simple_cmd, 
                     &robot_vars_->robot_state, 
                     &robot_vars_->ctrl_out
                 );
     controller_->init();
-    // controller_ = std::make_shared<RamseteController>(
-    //                 &robot_vars_->ref_traj, 
-    //                 &robot_vars_->robot_state, 
-    //                 &robot_vars_->ctrl_out, 
-    //                 0.8, 
-    //                 20
-    //             );
 
     // Navigation
     robot_ekf_ = std::make_shared<DiffDriveEKF>(
@@ -43,7 +55,8 @@ void Loop::init()
 void Loop::update()
 {
     // Get the reference point
-    traj_reader_->update();
+    // traj_reader_->update();
+    vector_action_->update();
 
     // Update EKF
     robot_ekf_->update();

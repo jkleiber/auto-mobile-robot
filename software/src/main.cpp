@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
         std::make_shared<ArduinoInterface>(
             &robot_vars->ctrl_out, 
             &robot_vars->ekf_input, 
-            "/dev/ttyUSB2");
+            "/dev/ttyUSB0");
 
     while(true)
     {

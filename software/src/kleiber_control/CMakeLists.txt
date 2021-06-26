@@ -11,7 +11,8 @@ add_library(${PROJECT_NAME}
     src/pid_controller.cpp 
     src/utils.cpp 
     src/linear_mpc.cpp
-    src/state_space.cpp)
+    src/state_space.cpp
+    src/simple_drive_controller.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_link_libraries(${PROJECT_NAME} 
     PUBLIC ${OPTIMIZATION_LIBRARIES} kleiber_guidance kleiber_navigation)

@@ -10,7 +10,9 @@
 // GNC
 #include "kleiber_control/ramsete.h"
 #include "kleiber_control/point_shoot.h"
+#include "kleiber_control/simple_drive_controller.h"
 #include "kleiber_guidance/trajectory_reader.h"
+#include "kleiber_guidance/vector_action.h"
 #include "kleiber_navigation/diffdrive_ekf.h"
 
 class Loop {
@@ -29,11 +31,14 @@ class Loop {
         // Robot variables
         RobotVariables *robot_vars_;
 
+        // Action
+        std::shared_ptr<VectorAction> vector_action_;
+
         // Trajectory reader
         std::shared_ptr<TrajectoryReader> traj_reader_;
 
         // Controller
-        std::shared_ptr<PointShootControl> controller_;
+        std::shared_ptr<SimpleDriveController> controller_;
 
         // EKF
         std::shared_ptr<DiffDriveEKF> robot_ekf_;

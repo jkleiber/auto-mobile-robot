@@ -36,7 +36,7 @@ void PointShootControl::update()
     double dy = ref_traj_->state(1) - state_->x(1);
     angle_ref_ = atan2(dy, dx);
 
-    std::cout << "x: " << dx << " y: " << dy << std::endl;
+    // std::cout << "x: " << dx << " y: " << dy << std::endl;
 
     // Update the PID
     w_ctrl_.update();

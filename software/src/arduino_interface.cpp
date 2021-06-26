@@ -17,6 +17,7 @@ void ArduinoInterface::update()
     {
         rapidjson::Document d;
         d.Parse(json);
+        std::cout << json_str << std::endl;
 
         // Document must be an object and have the appropriate members
         // TODO: make this validator better
@@ -98,7 +99,7 @@ int ArduinoInterface::open_serial_port(std::string channel)
     }
 
     // Set the baud rate of the serial port.
-    serial_port_.SetBaudRate(LibSerial::BaudRate::BAUD_9600);
+    serial_port_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
 
     // Set the number of data bits.
     serial_port_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);
