@@ -7,34 +7,6 @@ ArduinoInterface::~ArduinoInterface(){
 
 void ArduinoInterface::update()
 {
-    // Convert v and w to left and right power
-    double base_vel = ctrl_out_->u(0);
-    double wheel_vel_adj = ctrl_out_->u(1)/(Robot::wheelbase_len);
-    double left = base_vel - wheel_vel_adj;
-    // double right = base_vel + wheel_vel_adj;
-    double right = (double)it_test;
-    it_test += 1;
-
-    // Build a command packet in JSON
-    rapidjson::StringBuffer out_buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(out_buffer);
-
-    // Packet: {"left": 0.0, "right": 0.0}
-    writer.StartObject();
-    writer.Key("left");
-    writer.Double(left);
-    writer.Key("right");
-    writer.Double(right);
-    writer.EndObject();
-
-    // Write to the serial channel
-    std::string out_str = out_buffer.GetString();
-    out_str += "\n";
-    this->arduino_write(out_str);
-
-    // Adding in a sleep results in fewer dropped packets
-    usleep(20000);
-
     // Pull data from the serial channel
     std::string json_str = "";
     int status = this->arduino_read(&json_str);
@@ -45,20 +17,30 @@ void ArduinoInterface::update()
     {
         rapidjson::Document d;
         d.Parse(json);
+        // std::cout << json_str << std::endl;
 
         // Document must be an object and have the appropriate members
         // TODO: make this validator better
         if(d.IsObject() && d.HasMember("roll") && d.HasMember("pitch") && d.HasMember("yaw"))
         {
             // Get the values from this JSON packet
-            rapidjson::Value& roll_val = d["roll"];
-            rapidjson::Value& pitch_val = d["pitch"];
-            rapidjson::Value& yaw_val = d["yaw"];
+            rapidjson::Value& roll_val = d["roll"];         // deg
+            rapidjson::Value& pitch_val = d["pitch"];       // deg
+            rapidjson::Value& yaw_val = d["yaw"];           // deg
+            rapidjson::Value& left_vel = d["left_vel"];     // m/s
+            rapidjson::Value& right_vel = d["right_vel"];   // m/s
+
+            // Calculate velocity
+            double r = Robot::wheel_radius;
+            double v = (left_vel.GetDouble() + right_vel.GetDouble()) / 2.0;
+            double w = (right_vel.GetDouble() - left_vel.GetDouble()) / r;
 
             // Update the sensor data from this packet
             // sensor_data_->imu_roll = roll_val.GetDouble();
             // sensor_data_->imu_pitch = pitch_val.GetDouble();
-            sensor_data_->imu_yaw = yaw_val.GetDouble();
+            sensor_data_->imu_yaw = yaw_val.GetDouble() * M_PI / 180.0;
+            sensor_data_->linear_velocity = v;
+            sensor_data_->angular_velocity = w;
         }
         else
         {
@@ -69,6 +51,37 @@ void ArduinoInterface::update()
     {
         std::cout << "No Serial Data.\n";
     }
+
+    // Convert v and w to left and right power
+    double base_vel = ctrl_out_->u(0);
+    double wheel_vel_adj = Robot::wheel_radius * ctrl_out_->u(1);
+    double left = base_vel - wheel_vel_adj;
+    double right = base_vel + wheel_vel_adj;
+
+    // Build a command packet in JSON
+    rapidjson::StringBuffer out_buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(out_buffer);
+
+    // Convert commands to strings
+    std::string left_str = std::to_string(left);
+    std::string right_str = std::to_string(right);
+
+    // Packet: {"left": 0.0, "right": 0.0}
+    writer.StartObject();
+    writer.Key("left");
+    writer.String(left_str.c_str());
+    writer.Key("right");
+    writer.String(right_str.c_str());
+    writer.EndObject();
+
+    // Write to the serial channel
+    std::string out_str = out_buffer.GetString();
+    out_str += "\n";
+    this->arduino_write(out_str);
+    // std::cout << out_str << std::endl;
+
+    // Adding in a sleep results in fewer dropped packets
+    usleep(20000);
 }
 
 
@@ -86,7 +99,7 @@ int ArduinoInterface::open_serial_port(std::string channel)
     }
 
     // Set the baud rate of the serial port.
-    serial_port_.SetBaudRate(LibSerial::BaudRate::BAUD_9600);
+    serial_port_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
 
     // Set the number of data bits.
     serial_port_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);

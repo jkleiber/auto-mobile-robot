@@ -4,29 +4,40 @@ Loop::~Loop(){}
 
 void Loop::init()
 {
-    // Trajectory reader
-    traj_reader_ = std::make_shared<TrajectoryReader>(
-        "config/trajectory.csv",
-        &robot_vars_->ref_traj,
-        &robot_vars_->robot_state,
-        &loop_time_
-    );
-    traj_reader_->init();
+    // TODO: initialize robot vars to avoid segfaults
 
-    // Robot controller
-    controller_ = std::make_shared<PointShootControl>(
-                    &robot_vars_->ref_traj, 
+    // Trajectory reader
+    // traj_reader_ = std::make_shared<TrajectoryReader>(
+    //     "config/trajectory.csv",
+    //     &robot_vars_->ref_traj,
+    //     &robot_vars_->robot_state,
+    //     &loop_time_
+    // );
+    // traj_reader_->init();
+
+    // Trajectory Following Robot controller
+    // controller_ = std::make_shared<PointShootControl>(
+    //                 &robot_vars_->ref_traj, 
+    //                 &robot_vars_->robot_state, 
+    //                 &robot_vars_->ctrl_out
+    //             );
+    // controller_->init();
+
+    // Action Command
+    std::vector<std::shared_ptr<Action> > action_vector;
+    action_vector.push_back(std::make_shared<VectorAction>(15.0, M_PI, 0.0, &robot_vars_->simple_cmd));
+    action_vector.push_back(std::make_shared<VectorAction>(15.0, M_PI, 0.5, &robot_vars_->simple_cmd));
+    
+    // Routine manager
+    routine_ = std::make_shared<Routine>(action_vector);
+
+    // Simple Robot Controller
+    controller_ = std::make_shared<SimpleDriveController>(
+                    &robot_vars_->simple_cmd, 
                     &robot_vars_->robot_state, 
                     &robot_vars_->ctrl_out
                 );
     controller_->init();
-    // controller_ = std::make_shared<RamseteController>(
-    //                 &robot_vars_->ref_traj, 
-    //                 &robot_vars_->robot_state, 
-    //                 &robot_vars_->ctrl_out, 
-    //                 0.8, 
-    //                 20
-    //             );
 
     // Navigation
     robot_ekf_ = std::make_shared<DiffDriveEKF>(
@@ -43,7 +54,9 @@ void Loop::init()
 void Loop::update()
 {
     // Get the reference point
-    traj_reader_->update();
+    // traj_reader_->update();
+    // vector_action_->update();
+    routine_->update();
 
     // Update EKF
     robot_ekf_->update();

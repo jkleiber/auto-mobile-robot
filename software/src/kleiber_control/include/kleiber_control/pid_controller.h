@@ -44,6 +44,7 @@ class PIDController
         bool is_wrap_;
         double wrap_min_;
         double wrap_max_;
+        double wrap_range_;
 
         // Timing
         double dt_;

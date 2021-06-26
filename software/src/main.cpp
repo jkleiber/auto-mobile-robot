@@ -23,10 +23,8 @@ int main(int argc, char **argv) {
             &robot_vars->ekf_input, 
             "/dev/ttyUSB0");
 
-    for (int i = 0; i < 100; ++i)
+    while(true)
     {
-        std::cout << i << std::endl;
-
         robot_loop->update();
 
         arduino_interface->update();
