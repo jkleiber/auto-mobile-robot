@@ -20,7 +20,7 @@ class SimpleDriveController
             : cmd_(cmd),
               state_(state),
               ctrl_(ctrl_out),
-              yaw_control_(3.0, 0, 0, &yaw_setpoint_, &yaw_, &w_out_) {}
+              yaw_control_(2.5, 0.1, 0, &yaw_setpoint_, &yaw_, &w_out_) {}
 
         void init();
         void update();

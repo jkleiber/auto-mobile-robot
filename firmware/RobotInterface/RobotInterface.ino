@@ -31,8 +31,8 @@ float left_vel_desired = 0.0;
 float right_vel_desired = 0.0;
 
 // PIDs for tracking velocity commands
-PID left_vel_pid(0.0, 0.0, 1.5, 0);
-PID right_vel_pid(0.0, 0.0, 1.5, 0);
+PID left_vel_pid(0.0, 0.8, 1.5, 0);
+PID right_vel_pid(0.0, 0.8, 1.5, 0);
 float left_power = 0.0, right_power = 0.0;
 
 // Deadband (set to 0 if absolute value is smaller than this)
@@ -183,10 +183,16 @@ void loop()
     if(fabs(left_vel_desired) < fabs(deadband))
     {
         left_power = 0.0;
+
+        // Reset to avoid integral windup on startup with new speed commands
+        left_vel_pid.reset();
     }
     if(fabs(right_vel_desired) < fabs(deadband))
     {
         right_power = 0.0;
+
+        // Reset to avoid integral windup on startup with new speed commands
+        right_vel_pid.reset();
     }
 
     // Tank drive

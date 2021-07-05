@@ -1,6 +1,11 @@
 #include "arduino_interface.h"
 
-ArduinoInterface::~ArduinoInterface(){
+ArduinoInterface::~ArduinoInterface()
+{  
+    // Set motors to 0
+    this->send_motor_message(0.0, 0.0);
+
+    // Close the serial port
     serial_port_.Close();
 }
 
@@ -58,27 +63,7 @@ void ArduinoInterface::update()
     double left = base_vel - wheel_vel_adj;
     double right = base_vel + wheel_vel_adj;
 
-    // Build a command packet in JSON
-    rapidjson::StringBuffer out_buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(out_buffer);
-
-    // Convert commands to strings
-    std::string left_str = std::to_string(left);
-    std::string right_str = std::to_string(right);
-
-    // Packet: {"left": 0.0, "right": 0.0}
-    writer.StartObject();
-    writer.Key("left");
-    writer.String(left_str.c_str());
-    writer.Key("right");
-    writer.String(right_str.c_str());
-    writer.EndObject();
-
-    // Write to the serial channel
-    std::string out_str = out_buffer.GetString();
-    out_str += "\n";
-    this->arduino_write(out_str);
-    // std::cout << out_str << std::endl;
+    this->send_motor_message(left, right);
 
     // Adding in a sleep results in fewer dropped packets
     usleep(20000);
@@ -140,3 +125,26 @@ int ArduinoInterface::arduino_write(std::string data)
     return 0;
 }
 
+void ArduinoInterface::send_motor_message(double left, double right)
+{
+    // Convert the motor velocities to strings
+    std::string left_str = std::to_string(left);
+    std::string right_str = std::to_string(right);
+
+    // Build RapidJSON message
+    rapidjson::StringBuffer out_buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(out_buffer);
+
+    // Packet: {"left": 0.0, "right": 0.0}
+    writer.StartObject();
+    writer.Key("left");
+    writer.String(left_str.c_str());
+    writer.Key("right");
+    writer.String(right_str.c_str());
+    writer.EndObject();
+
+    // Write to Arduino
+    std::string out_str = out_buffer.GetString();
+    out_str += "\n";
+    this->arduino_write(out_str);
+}

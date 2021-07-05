@@ -11,12 +11,12 @@
 #define RIGHT_ENCODER_A 2
 #define RIGHT_ENCODER_B 11
 
-#define WHEEL_SIZE WHEEL_238
+#define WHEEL_SIZE WHEEL_278
 
 #if WHEEL_SIZE == WHEEL_278
-    // 2-7/8" wheel, rotated 3 times, encoder output: 4192 -> K = 0.006464 ticks/inch
-    #define LEFT_ENCODER_CONST (float)(0.006464)
-    #define RIGHT_ENCODER_CONST (float)(0.006464)
+    // 2-7/8" wheel, rotated 3 times, encoder output: 4192 -> K = 0.00016418 ticks/meter
+    #define LEFT_ENCODER_CONST (float)(0.00016418)
+    #define RIGHT_ENCODER_CONST (float)(0.00016418)
 #elif WHEEL_SIZE == WHEEL_238
     // 2-3/8" wheel, rotated 3 times, encoder output: 4192 -> K = 0.000135627 ticks/meter
     #define LEFT_ENCODER_CONST (float)(0.000135627)

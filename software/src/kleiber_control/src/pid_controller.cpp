@@ -6,7 +6,8 @@ void PIDController::init()
 {
     last_state_ = *state_;
     integrator_ = 0.0;
-    last_error_ = *setpoint_ - *state_;
+    last_error_ = 0.0;
+    last_time_ = std::chrono::steady_clock::now();
 }
 
 
@@ -30,9 +31,9 @@ void PIDController::update()
     double D = this->Kd_ * (d_err / dt_);
 
     // Integration (trapezoidal)
-    double slice = dt_ * (last_error_ + error) / 2.0;
+    double slice = this->Ki_ * dt_ * (last_error_ + error) / 2.0;
     integrator_ += slice;
-    double I = this->Ki_ * integrator_;
+    double I = integrator_;
 
     // Compute the output
     *output_ = P + I + D;

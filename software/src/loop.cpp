@@ -25,8 +25,9 @@ void Loop::init()
 
     // Action Command
     std::vector<std::shared_ptr<Action> > action_vector;
-    action_vector.push_back(std::make_shared<VectorAction>(15.0, M_PI, 0.0, &robot_vars_->simple_cmd));
-    action_vector.push_back(std::make_shared<VectorAction>(15.0, M_PI, 0.5, &robot_vars_->simple_cmd));
+    action_vector.push_back(std::make_shared<VectorAction>(5.0, 0, 0.25, &robot_vars_->simple_cmd));
+    action_vector.push_back(std::make_shared<VectorAction>(10.0, M_PI, 0.0, &robot_vars_->simple_cmd));
+    action_vector.push_back(std::make_shared<VectorAction>(5.0, M_PI, 0.25, &robot_vars_->simple_cmd));
     
     // Routine manager
     routine_ = std::make_shared<Routine>(action_vector);

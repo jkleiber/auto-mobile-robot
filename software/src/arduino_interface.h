@@ -58,8 +58,12 @@ class ArduinoInterface
         // Do port setup
         int open_serial_port(std::string channel);
 
+        // Arduino LibSerial interfacing
         int arduino_read(std::string *buf);
         int arduino_write(std::string data);
+
+        // Message Sending
+        void send_motor_message(double left, double right);
 
         int it_test;
 };
