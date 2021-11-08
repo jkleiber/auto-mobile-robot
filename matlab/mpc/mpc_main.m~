@@ -1,0 +1,19 @@
+
+% Reference trajectory
+x_ref = 10;
+y_ref = 5;
+theta_ref = deg2rad(45);\
+
+% Timing
+dt = 0.1;
+T = 100;
+t = linspace(0,T,T/dt);
+N = length(t);
+
+% Actual trajectory
+x_traj = zeros(3,N);
+
+% Simulation
+for k = 1:N
+    x_traj(:,k) = differential_drive_disct 
+end
